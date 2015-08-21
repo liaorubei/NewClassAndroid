@@ -1,10 +1,15 @@
 package com.newclass.woaixue.util;
 
-import java.io.BufferedInputStream;
+import android.util.Log;
+
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
@@ -13,28 +18,44 @@ import java.net.URL;
 public class NetWorkUtil {
 
 
-    public static void connect(String url, ConnectionCallback callback) {
-        try {
+    public static void connect(final String url, final ConnectionCallback callback) {
 
-            //◊”œﬂ≥Ã
-            InputStream inputStream = new URL(url).openStream();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            reader.readLine();
-            StringBuilder sb = new StringBuilder();
-            String temp;
-            while ((temp = reader.readLine()) != null) {
-                sb.append(temp);
+
+        //Â≠êÁ∫øÁ®ã
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+
+                    HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+                    con.setRequestMethod("GET");
+                    con.connect();
+                    if (con.getResponseCode() == 200) {
+                        InputStream inputStream = con.getInputStream();
+                        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+                        byte[] buffer = new byte[1024];
+                        int len;
+                        while ((len = inputStream.read(buffer)) != -1) {
+                            outputStream.write(buffer, 0, len);
+                        }
+                        Log.i("e", "run " + outputStream.toString());
+
+                        //ÂÖ≥Èó≠ÊµÅ
+                        outputStream.close();//Ê≠§ÊµÅÂÖ≥Èó≠Êó†Êïà
+                        inputStream.close();
+                    }
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
-
-            //÷˜œﬂ≥Ã
-            callback.getResult(sb.toString());
-
-            reader.close();
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
+        ).start();
 
 
     }

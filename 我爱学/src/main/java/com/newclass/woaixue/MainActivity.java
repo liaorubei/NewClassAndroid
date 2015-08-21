@@ -54,9 +54,9 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MainActivity.this, PlayActivity.class);
-                Toast.makeText(MainActivity.this,list.get(position).getTitle(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, list.get(position).getTitle(), Toast.LENGTH_SHORT).show();
                 intent.putExtra("id", id);
-              //  startActivity(intent);
+                startActivity(intent);
             }
         });
     }
@@ -87,7 +87,7 @@ public class MainActivity extends ActionBarActivity {
                         for (int i = 0; i < ar.length(); i++) {
 
                             JSONObject o = ar.getJSONObject(i);
-                            Document doc=new Document(o.getInt("id"),o.getString("title"));
+                            Document doc = new Document(o.getInt("id"), o.getString("title"));
                             list.add(doc);
                         }
 

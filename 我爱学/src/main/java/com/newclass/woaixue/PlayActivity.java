@@ -1,11 +1,11 @@
 package com.newclass.woaixue;
 
-import android.content.SharedPreferences;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.newclass.woaixue.util.LyricUtil;
 import com.newclass.woaixue.util.NetWorkUtil;
 
 
@@ -19,8 +19,19 @@ public class PlayActivity extends ActionBarActivity {
         getIntent().getLongExtra("id", 0);
 
 
+        NetWorkUtil.connect("http://192.168.3.119:801/NewClass/Docs", new NetWorkUtil.ConnectionCallback() {
+            @Override
+            public void getResult(String result) {
 
-        NetWorkUtil.connect("",new NetWorkUtil.ConnectionCallback(){});
+            }
+        });
+
+
+        String lrc = "";
+
+
+        LyricUtil.Lyric lyric = LyricUtil.parse(lrc);
+
 
     }
 
