@@ -19,13 +19,6 @@ public class PlayActivity extends ActionBarActivity {
         getIntent().getLongExtra("id", 0);
 
 
-        NetWorkUtil.connect("http://192.168.3.119:801/NewClass/Docs", new NetWorkUtil.ConnectionCallback() {
-            @Override
-            public void getResult(String result) {
-
-            }
-        });
-
 
         String lrc = "";
 
