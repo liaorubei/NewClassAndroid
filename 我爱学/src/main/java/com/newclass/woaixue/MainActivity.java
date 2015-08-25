@@ -1,12 +1,12 @@
 package com.newclass.woaixue;
 
-
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.ListFragment;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -32,17 +32,20 @@ import com.lidroid.xutils.view.annotation.ViewInject;
 import com.newclass.woaixue.bean.Document;
 import com.newclass.woaixue.fragment.CategoryFragment;
 import com.newclass.woaixue.util.NetWorkUtil;
+import com.viewpagerindicator.TitlePageIndicator;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 public class MainActivity extends ActionBarActivity {
     private List<Document> list;
 
-    @ViewInject(R.id.viewPager)
-    private ViewPager viewPager;
+//    @ViewInject(R.id.indicator)
+//    private TitlePageIndicator indicator;
+/*    @ViewInject(R.id.viewPager)
+    private ViewPager viewPager;*/
+
     private MyPagerAdapter adapter;
     private List<Fragment> mainFragment;
 
@@ -50,9 +53,16 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ViewUtils.inject(this);
+ /*       ViewUtils.inject(this);
+        viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));*/
 
-        initData();
+
+
+
+
+
+
+     //   initData();
     }
 
 
@@ -65,13 +75,13 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public Fragment getItem(int position) {
 
-            return mainFragment.get(0);
+            return MyFragment.newInstance(position);
         }
 
         @Override
         public int getCount() {
 
-            return 1;
+            return 10;
         }
     }
 
@@ -120,6 +130,9 @@ public class MainActivity extends ActionBarActivity {
 
         HttpUtils httpUtils = new HttpUtils();
         httpUtils.send(HttpRequest.HttpMethod.GET, NetWorkUtil.NewClassDocs, new RequestCallBack<String>() {
+
+            private PagerAdapter ai;
+
             @Override
             public void onSuccess(ResponseInfo<String> responseInfo) {
 
@@ -133,7 +146,10 @@ public class MainActivity extends ActionBarActivity {
                 mainFragment.add(categoryFragment);
 
                 adapter = new MyPagerAdapter(getSupportFragmentManager());
-                viewPager.setAdapter(adapter);
+ /*               viewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
+                ai = viewPager.getAdapter();*/
+
+
                 categoryFragment.initData(list);
                 adapter.notifyDataSetChanged();
 
